@@ -1,52 +1,501 @@
-# Prerequisites
-*.d
+#include <conio.h>
+#include <stdio.h>
+#include <windows.h>
+#include <stdlib.h>
+#include <dos.h>
+#define ARCH "C:\\Avion_crush\\NOMBRE.dat"//Ruta al archivo.
+#define ARCH1 "C:\\Avion_crush\\PUNTAJE.dat"//Ruta al archivo.
+#define ARCH2 "C:\\Avion_crush\\PUNTAJE1.dat"//Ruta al archivo.
+//Inicio
+void instrucciones();
+void presentancion();
+void gotoxy(int x,int y);
+//Aviones
+void avionGrande();
+void avionMediano();
+void avionChico();
+//Choque del avion
+void avion_crush();
+//Mapas
+void mapaSis();
+void mapaCtes();
+//Torres
+void torreControlSis();
+void torreControlCtes();
+//Niveles
+int nivel1();
+int nivel2();
+void puntajesJuego();
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
 
-# Linker output
-*.ilk
-*.map
-*.exp
+//Main del Videojuego
+int main() {
+	presentancion();
+	instrucciones();
+	getch();
+	system("cls");
+	while(nivel1()==0){nivel1();}
+	system("cls");
+	while(nivel2()==0){nivel2();}
+	system("cls");
+	puntajesJuego();
+	return 0;
+}
 
-# Precompiled Headers
-*.gch
-*.pch
+/*Presentanción de Videojuego*/
+void presentancion(){
+	int x=15, y=5;
+	int z=5, w=15;
+	for(int i=0;i<9;i++){
+		gotoxy(z+2,w-1);printf("||");
+		gotoxy(z,w);printf("------");
+		gotoxy(z,w+1);printf(" ----  ");
+		gotoxy(z,w+2);printf("  --  ");
+		gotoxy(z,w+3);printf("  --  ");
+		gotoxy(z,w+4);printf("  --  ");
+		gotoxy(z,w+5);printf("  --  ");
+		gotoxy(0,w+6);printf("________________________________________________________________________________");
+		gotoxy(x,y);printf("--( )--    --( )--   AVION CRUSH   --( )--    --( )--");
+		Sleep(300);
+		y=y+2;
+		system("cls");
+	}
+	
+}
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+/*Intrucciones para el jugador*/
+void instrucciones(){
+	
+	FILE*Avion_crush;
+	
+	char Nombre[20];
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+	if((Avion_crush=fopen(ARCH,"wb"))==NULL){
+		printf("Guardando...");
+	}
+	
+	printf("               ---------------------------------------------\n");
+	printf("              |Maximiza tu ventana y sigue las instrucciones|                   \n");
+	printf("               ---------------------------------------------\n");
+	printf("********************************************************************************\n");
+	
+	printf("¿Como es tu nombre?: ");
+	scanf("%s", Nombre);
+	//fseek(Avion_crush, 0, SEEK_END);
+	fwrite(&Nombre,sizeof(Nombre),1,Avion_crush);
+	
+	printf("\nRecuerda bien estas instrucciones:\n");
+	printf("\n1. Evita chocar con las nubes.\n");
+	printf("2. Debes aterrizar el avión en la plataforma correcta.\n");
+	printf("2. Las plataformas estarán numeradas y solo una es la adecuada para tu avión.\n");
+	printf("3. Mira bien la cantidad de movimientos que tienes en cada nivel.\n\n");
+	printf("Por favor, no olvides maximizar tu ventana...\n");
+	printf("********************************************************************************\n\n");
+	printf("presiona una tecla...\n");
+	int z=5, w=18;
+	gotoxy(z+2,w-1);printf("||");
+	gotoxy(z,w);printf("------");
+	gotoxy(z,w+1);printf(" ----  ");
+	gotoxy(z,w+2);printf("  --  ");
+	gotoxy(z,w+3);printf("  --  ");
+	gotoxy(z,w+4);printf("  --  ");
+	gotoxy(z,w+5);printf("  --  ");
+	gotoxy(0,w+6);printf("________________________________________________________________________________");
+	gotoxy(15,24);printf("--( )--    --( )--   AVION CRUSH   --( )--    --( )--");
+	getch();
+	system("cls");
+	printf("                               <<<<COMANDOS>>>>                                 \n\n");
+	printf("a: IZQUIERDA\n");
+	printf("d: DERECHA\n");
+	printf("s: ABAJO\n");
+	printf("W: ARRIBA\n\n");
+	printf("Revisa nuevamente los comandos, es importante para que puedas mover tu avión.\n\n");
+	printf("       Si el avión no se mueve, comprueba no tener activada la mayuscúla.       \n");
+	printf("********************************************************************************\n");
+	printf("****************************¡¡¡¡¡¡BUENA SUERTE!!!!!!****************************\n");
+	printf("presiona una tecla...\n");
+	gotoxy(z+2,w-1);printf("||");
+	gotoxy(z,w);printf("------");
+	gotoxy(z,w+1);printf(" ----  ");
+	gotoxy(z,w+2);printf("  --  ");
+	gotoxy(z,w+3);printf("  --  ");
+	gotoxy(z,w+4);printf("  --  ");
+	gotoxy(z,w+5);printf("  --  ");
+	gotoxy(0,w+6);printf("________________________________________________________________________________");
+	gotoxy(15,24);printf("--( )--    --( )--   AVION CRUSH   --( )--    --( )--");
+	fclose(Avion_crush);
+}
+//Función que ubica los gráficos
+void gotoxy(int x,int y){  
+	HANDLE hcon;  
+	hcon = GetStdHandle(STD_OUTPUT_HANDLE);  
+	COORD dwPos;  
+	dwPos.X = x;  
+	dwPos.Y= y;  
+	SetConsoleCursorPosition(hcon,dwPos);  
+} 
+//Función que imprime avión Grande
+void avionGrande(){
+	char avion_grande[]={"---(  )---"};
+	printf(avion_grande);
+}
+//Función que imprime avión Mediano
+void avionMediano(){
+	char avion_mediano[]={"--( )--"};
+	printf(avion_mediano);
+}
+//Función que imprime avión Chico
+void avionChico(){
+	char avion_chico[]={"-( )-"};
+	printf(avion_chico);
+}
+//Función para el choque del avión
+void avion_crush(){
+	int x=15, y=5;
+	int z=5, w=15;
+	for(int i=0;i<9;i++){
+		gotoxy(z+2,w-1);printf("||");
+		gotoxy(z,w);printf("------");
+		gotoxy(z,w+1);printf(" ----  ");
+		gotoxy(z,w+2);printf("  --  ");
+		gotoxy(z,w+3);printf("  --  ");
+		gotoxy(z,w+4);printf("  --  ");
+		gotoxy(z,w+5);printf("  --  ");
+		gotoxy(0,w+6);printf("________________________________________________________________________________");
+		gotoxy(x,y);printf("                   ¡¡  --( )--  !!                  ");
+		Sleep(50);
+		y=y+2;
+		system("cls");
+		
+	}
+	
+	Beep(800,500);
+	gotoxy(8,y-1); printf("                     ¡¡POOOOM!!                  ");
+	Sleep(10);
+	gotoxy(9,y-3); printf("                   ¡¡  ****  !!                  ");
+	gotoxy(9,y+1); printf("                   ¡¡  ****  !!                  ");
+	gotoxy(8,y-4); printf("                   ¡¡  ******  !!                  ");
+	gotoxy(8,y); printf("                   ¡¡  ******  !!                  ");
+	gotoxy(z+2,w-1);printf("||");
+	gotoxy(z,w);printf("------");
+	gotoxy(z,w+1);printf(" ----  ");
+	gotoxy(z,w+2);printf("  --  ");
+	gotoxy(z,w+3);printf("  --  ");
+	gotoxy(z,w+4);printf("  --  ");
+	gotoxy(z,w+5);printf("  --  ");
+	gotoxy(0,w+6);printf("________________________________________________________________________________");
+	
+}
+//Función que imprime mapa de Nivel 1= Resistencia
+void mapaSis(){
+	gotoxy(0,6); printf("****     ****************     **************************       *****************");
+	gotoxy(0,7); printf("****     ****************     **************************       *****************");
+	gotoxy(0,8); printf("****     ****************     **************************       *****************");
+	gotoxy(0,9); printf("****     ****************     **************************       *****************");
+	gotoxy(0,10);printf("****     ****************     **************************       *****************");
+	gotoxy(0,11);printf("****                                                           *****************");
+	gotoxy(0,12);printf("****      *************************       **************************************");
+	gotoxy(0,13);printf("****      *************************       **************************************");
+	gotoxy(0,14);printf("****      *************************       **************************************");
+	gotoxy(0,15);printf("****      *************************       **************************************");
+	gotoxy(0,16);printf("****      *************************       **************************************");
+	gotoxy(0,17);printf("****      *************************       **************************************");
+	gotoxy(0,18);printf("****                                                            ****************");
+	gotoxy(0,19);printf("****       **************     ****************************      ****************");
+	gotoxy(0,20);printf("****       **************     ****************************      ****************");
+	gotoxy(0,21);printf("****       **************     ****************************      ****************");
+	gotoxy(0,22);printf("****       **************     ****************************      ****************");
+	gotoxy(0,23);printf("****       **************     ****************************      ****************");
+	gotoxy(0,24);printf("****                                                            ****************");
+	gotoxy(0,25);printf("****                                                            ****************");
+	gotoxy(0,26);printf("****                                                            ****************");
+	gotoxy(0,27);printf("****       **************      ***************************        **************");
+	gotoxy(0,28);printf("****       **************      ***************************        **************");
+	gotoxy(0,29);printf("****       **************      ***************************        **************");
+	gotoxy(0,30);printf("****       **************      ***************************        **************");
+	gotoxy(0,31);printf("****       **************      ***************************        **************");
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+}
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+//Función que imprime Torre de Control Nivel 1= Resistencia
+void torreControlSis(){
+	int z=10,w=35;//Coordenadas para la Torre de Control
+	
+	gotoxy(z+2,w-1);printf("||");
+	gotoxy(z,w);printf("------");
+	gotoxy(z,w+1);printf(" ----  ");
+	gotoxy(z,w+2);printf("  --  ");
+	gotoxy(z,w+3);printf("  --  ");
+	gotoxy(z,w+4);printf("  --  ");
+	gotoxy(z,w+5);printf("  --  ");
+	gotoxy(0,w+6);printf("_________________________ _ _ ____________________ _ _ _ ______ _ _ _ _ ______");
+	gotoxy(0,w+7);printf("                           1                         2              3         ");
+	gotoxy(z-3,w+7);printf("[RESISTENCIA]");
+	gotoxy(z-3,w+9);printf("                           Rodriguez Jorge Ricardo - TSP - Laboratorio I ");
+}
+
+/*Nivel 1 - Resistencia*/
+int nivel1(){
+	FILE*Avion_crush1;
+	
+	int a=5,b=5; //Coordenadas para el avión
+	int v=0,t=0;//Coordenadas para los obstáculos
+	int movimientos=200;//Movimientos permitidos en el nivel
+	int vidas=3;//Cantidad de intentos
+	int nivel=0;
+	int puntaje=0;//Puntos del nivel
+	
+	char comando;//Comandos del avión
+	char opcion;//Opcion de juego
+
+
+	
+	if((Avion_crush1=fopen(ARCH1,"wb"))==NULL){
+		printf("Guardando...");
+	}
+
+
+	do{
+	
+		while(movimientos>0 && vidas>0){
+		/*Encabezado*/
+			gotoxy(0,0);printf("______________________________________NIVEL 1___________________________________\n");
+			gotoxy(0,1);printf("CANTIDAD DE MOVIMIENTOS: %d",movimientos);
+			gotoxy(70,1);printf("VIDAS [%d]", vidas);
+			/*Mapa*/
+			gotoxy(v,t+6);mapaSis();
+			
+			/*Torre de Control*/
+			torreControlSis();
+			
+			/*Avión y comandos de movimiento*/
+			gotoxy(a,b); avionMediano();
+			
+			
+			comando=getch();
+			if(comando=='a'){a--;movimientos--;}
+			if(comando=='d'){a++;movimientos--;}
+			if(comando=='w'){b--;movimientos--;}
+			if(comando=='s'){b++;movimientos--;}
+			system("cls");
+			
+			if(a>73 || a<0){gotoxy(15,15); printf("¡Vuelve, te saliste de la ruta!");getch();}
+			
+			if(a==50 && b==42){
+				puntaje=(movimientos*2)+(vidas*2);
+				fwrite(&puntaje,sizeof(puntaje),1,Avion_crush1);
+	
+				gotoxy(15,15); printf("      ¡Felicitaciones, aterrizaste con éxito!");
+				gotoxy(15,17); printf("                Sumaste: %d puntos", puntaje);
+				gotoxy(15,19); printf("...Superaste este nivel, toma fuerzas y continúa!!...");
+				gotoxy(15,22); printf("        <<Presiona una tecla para continuar>>");
+				getch();
+				getch();
+				nivel=1;
+				return 1;
+			}
+			if(a!=50 && b==42){
+				gotoxy(5,15); printf("¡Lo siento, puede no ser plataforma indicada. O debes ubicar bien tu avión!");
+				getch();
+				getch();
+			}
+			
+			if((a!=56 && b>=6 && b<11)||(a!=35 && b>=12 && b<18)||(b==11 && (a<4||a>56))||(b==18 && (a<4||a>56))|| (a!=4 && b>=19 && b<24)|| ((b>=24 && b<27) && (a<4||a>56))||(a!=4 && b>=27 && b<32)||((a>3 && a<16) && b>34)||((a>4 && a<14) && b>33)){
+				avion_crush();	
+				gotoxy(15,10); printf("       ¡Has chocado el avión!");
+				gotoxy(15,15); printf("<<Presiona una tecla para continuar>>");
+				vidas--;
+				getch();
+				getch();
+				
+				
+			}
+		}
+	/*Menú de opción para volver a jugar*/
+		if(vidas==0 || movimientos==0){
+			system("cls");
+			gotoxy(15,15);printf("¡¡No pudiste superar el nivel!!");
+			gotoxy(15,17);printf("¿Quieres volver a intentarlo? (s/n): ");
+			opcion=getch();
+			system("cls");
+		}
+		if(opcion!='n'){movimientos=200;a=5;b=5;vidas=3;}
+	
+	}while(opcion!='n' || nivel!=1);
+
+	if(opcion=='n'){printf("\n_____________________________¡Gracias por Jugar!______________________________");getch();}
+	
+	fclose(Avion_crush1);
+	return nivel;
+
+}
+
+//Función que imprime mapa de Nivel 2= Corrientes
+void mapaCtes(){
+			
+	gotoxy(0,6); printf("********         ********          *********************         ***************");
+	gotoxy(0,7); printf("********         ********          *********************         ***************");
+	gotoxy(0,8); printf("********         ********          *********************         ***************");
+	gotoxy(0,9); printf("****             ********          *********************         ***************");
+	gotoxy(0,10);printf("****        *************          *********************         ***************");
+	gotoxy(0,11);printf("****                                                                          **");
+	gotoxy(0,12);printf("****        ***********************       *************************          ***");
+	gotoxy(0,13);printf("****        ***********************       *************************          ***");
+	gotoxy(0,14);printf("****        ***********************       *************************          ***");
+	gotoxy(0,15);printf("****        ***********************       *************************          ***");
+	gotoxy(0,16);printf("****        ***********************       *************************          ***");
+	gotoxy(0,17);printf("****        ***********************       *************************          ***");
+	gotoxy(0,18);printf("****        *************                                                    ***");
+	gotoxy(0,19);printf("****        *************     ************************          ****************");
+	gotoxy(0,20);printf("****        *************     ************************          ****************");
+	gotoxy(0,21);printf("****        *************     ************************          ****************");
+	gotoxy(0,22);printf("****        *************     ************************          ****************");
+	gotoxy(0,23);printf("****        *************     ************************          ****************");
+	gotoxy(0,24);printf("****                                                              **************");
+	gotoxy(0,25);printf("****        *************          ***********************        **************");
+	gotoxy(0,26);printf("****        *************          ***********************        **************");
+	gotoxy(0,27);printf("****        *************          ***********************        **************");
+	gotoxy(0,28);printf("****        *************          ***********************        **************");
+	gotoxy(0,29);printf("****        *************          ***********************        **************");
+	gotoxy(0,30);printf("****        *************          ***********************        **************");
+	gotoxy(0,31);printf("****        *************          ***********************        **************");
+	
+}
+
+//Función que imprime Torre de Control Nivel 2 = Corrientes
+void torreControlCtes(){
+	int z=10,w=35;//Coordenadas para la Torre de Control
+	
+	gotoxy(z+2,w-1);printf("||");
+	gotoxy(z,w);printf("------");
+	gotoxy(z,w+1);printf(" ----  ");
+	gotoxy(z,w+2);printf("  --  ");
+	gotoxy(z,w+3);printf("  --  ");
+	gotoxy(z,w+4);printf("  --  ");
+	gotoxy(z,w+5);printf("  --  ");
+	gotoxy(0,w+6);printf("_________________________ _ _ _ _________________ _ _ ________ _ _ _ _ _ _____");
+	gotoxy(0,w+7);printf("                            1                      2               3          ");
+	gotoxy(z-3,w+7);printf("[Corrientes]");
+}
+
+/*Nivel 2 - Corrientes*/
+int nivel2(){
+
+	FILE*Avion_crush2;
+	int a=5,b=5; //Coordenadas para el avión
+	int v=0,t=0;//Coordenadas para los obstáculos
+	int movimientos2=200;//Movimientos permitidos en el nivel
+	int vidas=3;//Cantidad de intentos
+	int nivel=0;
+	int puntaje2=0;//Puntos del nivel
+	
+	char comando;//Comandos del avión
+	char opcion;//Opcion de juego
+	
+	if((Avion_crush2=fopen(ARCH2,"wb"))==NULL){
+		printf("Guardando...");
+	}
+	
+	do{
+		
+		while(movimientos2>0 && vidas>0){
+			/*Encabezado*/
+			gotoxy(0,0);printf("______________________________________NIVEL 2___________________________________\n");
+			gotoxy(0,1);printf("CANTIDAD DE MOVIMIENTOS: %d",movimientos2);
+			gotoxy(70,1);printf("VIDAS [%d]", vidas);
+			/*Mapa*/
+			gotoxy(v,t+6);mapaCtes();
+			
+			/*Torre de Control*/
+			torreControlCtes();
+			
+			/*Avión y comandos de movimiento*/
+			gotoxy(a,b); avionGrande();
+			
+			
+			comando=getch();
+			if(comando=='a'){a--;movimientos2--;}
+			if(comando=='d'){a++;movimientos2--;}
+			if(comando=='w'){b--;movimientos2--;}
+			if(comando=='s'){b++;movimientos2--;}
+			system("cls");
+			
+			if(a>70 || a<0){gotoxy(15,15); printf("¡Vuelve, te saliste de la ruta!");getch();}
+			
+			if((a==62 && b==42) || (a==63 && b==42)){
+				puntaje2=(movimientos2*2)+(vidas*2);
+				fwrite(&puntaje2,sizeof(puntaje2),1,Avion_crush2);
+				
+				gotoxy(15,15); printf("      ¡Felicitaciones, aterrizaste con éxito!");
+				gotoxy(15,17); printf("              Sumaste: %d puntos", puntaje2);
+				gotoxy(15,19); printf("...Superaste este nivel, toma fuerzas y continúa!!...");
+				gotoxy(15,22); printf("        <<Presiona una tecla para continuar>>");
+				getch();
+				getch();
+				nivel=1;
+				return 1;
+			}
+			if((a<62 || a>63) && b==42){
+				gotoxy(5,15); printf("¡Lo siento, puede no ser plataforma indicada. O debes ubicar bien tu avión!");
+				getch();
+				getch();
+			}
+			
+			if((a!=25 && b>=6 && b<11)||(b==11 && (a<4||a>68))||(a!=67 && b>=12 && b<18)||(b==18 && (a<25||a>67))||(a!=54 && b>=19 && b<24)||(b==24 && (a<4||a>56))||(a!=25 && b>=25 && b<32)||((a>2 && a<14) && b==34)||((a>0 && a<16) && b==35)||((a>1 && a<15) && b==36)||((a>2 && a<14) && b>36)){				
+				
+				avion_crush();	
+				gotoxy(15,10); printf("       ¡Has chocado el avión!");
+				gotoxy(15,15); printf("<<Presiona una tecla para continuar>>");
+				vidas--;
+				getch();
+				
+			}
+		}
+		/*Menú de opción para volver a jugar*/
+		if(vidas==0 || movimientos2==0){
+			system("cls");
+			gotoxy(15,15);printf("¡¡No pudiste superar el nivel!!");
+			gotoxy(15,17);printf("¿Quieres volver a intentarlo? (s/n): ");
+			opcion=getch();
+			system("cls");
+		}
+
+		if(opcion!='n'){movimientos2=200;a=5;b=5;vidas=3;}
+		
+	}while(opcion!='n' || nivel!=1);
+	
+	if(opcion=='n'){printf("\n_____________________________¡Gracias por Jugar!______________________________");getch();
+	}
+	
+	fclose(Avion_crush2);
+	return nivel;
+	
+}
+void puntajesJuego(){
+FILE* Avion_crush;
+FILE* Avion_crush1;
+FILE* Avion_crush2;
+Avion_crush=fopen(ARCH,"rb");
+Avion_crush1=fopen(ARCH1,"rb");
+Avion_crush2=fopen(ARCH2,"rb");
+float puntos, puntajes, puntajes2;
+char Nombres[20];
+
+fread(&Nombres,sizeof(Nombres),1,Avion_crush); 
+fread(&puntajes,sizeof(puntajes),1,Avion_crush1); 
+fread(&puntajes2,sizeof(puntajes2),1,Avion_crush2);
+
+puntos=puntajes+puntajes2;
+
+printf("                Puntaje Obtenido por %s              \n", Nombres);
+printf("\n---------------------------------------------------\n");
+printf("Nivel 1: [%d] Puntos.\n",puntajes);
+printf("Nivel 2: [%d] Puntos.\n",puntajes2);
+printf("---------------------------------------------------\n");
+printf("Total: [%d] Puntos.\n",puntos);
+fclose(Avion_crush);
+fclose(Avion_crush1);
+fclose(Avion_crush2);
+getch();
+}
